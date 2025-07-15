@@ -47,7 +47,7 @@ module dts './modules/dts.bicep'={
     skuName: dtsSkuName
   }
   dependsOn:[
-    storage
+    storage  // TODO: Need this dependency?
   ]
 }
 

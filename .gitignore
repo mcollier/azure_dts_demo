@@ -1,0 +1,8 @@
+# Azurite emulator files
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+
+# Azure Functions localsettings file
+# local.settings.json

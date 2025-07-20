@@ -1,0 +1,35 @@
+name: .NET Build
+
+on:
+  push:
+    branches: [ $default-branch]
+  pull_request:
+    branches: [ $default-branch]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CONFIGURATION: Release
+      WORKING_DIRECTORY: ./src
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    - name: Build
+      run: dotnet build --configuration ${{ env.DOTNET_CONFIGURATION }} --no-restore
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    - name: Test
+      run: dotnet test --configuration ${{ env.DOTNET_CONFIGURATION }} --no-build --verbosity normal
+      working-directory: ${{ env.WORKING_DIRECTORY }}

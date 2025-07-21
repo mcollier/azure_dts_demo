@@ -2,6 +2,7 @@
 // This module assigns the necessary permissions for the Function App's system-assigned managed identity
 // and optionally for a user identity for development/testing scenarios
 
+param durableTaskSchedulerName string
 param storageAccountName string
 param appInsightsName string
 param managedIdentityPrincipalId string // Principal ID for the System-Assigned Managed Identity
@@ -10,6 +11,7 @@ param allowUserIdentityPrincipal bool = false // Flag to enable user identity ro
 
 // Define Role Definition IDs for Azure built-in roles
 var roleDefinitions = {
+  durableTaskDataContributor: '0ad04412-c4d5-4796-b79c-f76d14c8d402' // Durable Task Data Contributor role
   storageBlobDataOwner: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b' // Storage Blob Data Owner role
   storageQueueDataContributor: '974c5e8b-45b9-4653-ba55-5f855dd0fb88' // Storage Queue Data Contributor role
   storageTableDataContributor: '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3' // Storage Table Data Contributor role
@@ -23,6 +25,34 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing 
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
+}
+
+resource dts 'Microsoft.DurableTask/schedulers@2025-04-01-preview' existing = {
+  name: durableTaskSchedulerName
+}
+
+module dtsRoleAssignment 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.2' = if (!empty(managedIdentityPrincipalId)){
+  name: 'dtsRoleAssignment-${uniqueString(dts.id, managedIdentityPrincipalId)}'
+  params: {
+    resourceId: dts.id
+    roleDefinitionId: roleDefinitions.durableTaskDataContributor
+    principalId: managedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+    description: 'Durable Task Data Contributor role for Function App system-assigned managed identity'
+    roleName: 'Durable Task Data Contributor'
+  }
+}
+
+module dtsRoleAssignment_User 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.2' = if (allowUserIdentityPrincipal && !empty(userIdentityPrincipalId)) {
+  name: 'dtsRoleAssignment-${uniqueString(dts.id, userIdentityPrincipalId)}'
+  params: {
+    resourceId: dts.id
+    roleDefinitionId: roleDefinitions.durableTaskDataContributor
+    principalId: userIdentityPrincipalId
+    principalType: 'User'
+    description: 'Durable Task Data Contributor role for user identity (development/testing)'
+    roleName: 'Durable Task Data Contributor'
+  }
 }
 
 // Storage Account - Blob Data Owner Role Assignment (System-Assigned Managed Identity)

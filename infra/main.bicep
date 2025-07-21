@@ -16,7 +16,7 @@ param environmentName string
 param location string
 
 @description('Name of the storage account.')
-param storageAccountName string = ''  // if empty, will be auto-generated
+param storageAccountName string = '' // if empty, will be auto-generated
 
 param dtsSkuName string = 'Dedicated'
 param dtsCapacity int = 1
@@ -29,22 +29,21 @@ param functionPlanName string = '' // if empty, will be auto-generated
 param functionAppName string = '' // if empty, will be auto-generated
 param zoneRedundant bool = false
 
-@minValue(40)
-@maxValue(1000)
-param maximumInstanceCount int = 100
+// @minValue(40)
+// @maxValue(1000)
+// param maximumInstanceCount int = 100
 
-@allowed([512,2048,4096])
-param instanceMemoryMB int = 2048
+// @allowed([512, 2048, 4096])
+// param instanceMemoryMB int = 2048
 
-@allowed(['dotnet-isolated','python','java', 'node', 'powerShell'])
+@allowed(['dotnet-isolated', 'python', 'java', 'node', 'powerShell'])
 param functionAppRuntime string = 'dotnet-isolated'
 
-@allowed(['3.10','3.11', '3.12', '7.4', '8.0', '9.0', '10', '11', '17', '20', '21', '22'])
+@allowed(['3.10', '3.11', '3.12', '7.4', '8.0', '9.0', '10', '11', '17', '20', '21', '22'])
 param functionAppRuntimeVersion string = '8.0'
 
 @description('Id of the user running this template, to be used for testing and debugging for access to Azure resources. This is not required in production. Leave empty if not needed.')
 param principalId string = ''
-
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var tags = { 'azd-env-name': environmentName }
@@ -56,29 +55,27 @@ var functionAppName_resolved = !empty(functionAppName) ? functionAppName : '${ab
 // Generate a unique container name that will be used for deployments.
 var deploymentStorageContainerName = 'app-package-${take(functionAppName_resolved, 32)}-${take(resourceToken, 7)}'
 
-
-
-resource rg 'Microsoft.Resources/resourceGroups@2025-04-01'={
+resource rg 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: '${abbrs.resourcesResourceGroups}${environmentName}'
   location: location
   tags: tags
 }
 
-module dts './modules/dts.bicep'={
+module dts './modules/dts.bicep' = {
   scope: rg
-  params:{
+  params: {
     name: !empty(dtsName) ? dtsName : '${abbrs.dts}${resourceToken}'
     taskHubName: !empty(taskHubName) ? taskHubName : '${abbrs.taskhub}${resourceToken}'
     location: location
     tags: tags
-    ipAllowlist:[
-      '0.0.0.0/0'  // TODO: tighten this up for production use
+    ipAllowlist: [
+      '0.0.0.0/0' // TODO: tighten this up for production use
     ]
     skuCapacity: dtsCapacity
     skuName: dtsSkuName
   }
-  dependsOn:[
-    storage  // TODO: Need this dependency?
+  dependsOn: [
+    storage // TODO: Need this dependency?
   ]
 }
 
@@ -105,11 +102,11 @@ module storage 'br/public:avm/res/storage/storage-account:0.25.0' = {
       bypass: 'AzureServices'
     }
     blobServices: {
-      containers: [{name: deploymentStorageContainerName}]
+      containers: [{ name: deploymentStorageContainerName }]
     }
-    tableServices:{}
+    tableServices: {}
     queueServices: {}
-    minimumTlsVersion: 'TLS1_2'  // Enforcing TLS 1.2 for better security
+    minimumTlsVersion: 'TLS1_2' // Enforcing TLS 1.2 for better security
     location: location
     tags: tags
   }
@@ -145,8 +142,10 @@ module appServicePlan 'br/public:avm/res/web/serverfarm:0.1.1' = {
   params: {
     name: !empty(functionPlanName) ? functionPlanName : '${abbrs.webServerFarms}${resourceToken}'
     sku: {
-      name: 'FC1'
-      tier: 'FlexConsumption'
+      // name: 'FC1'
+      // tier: 'FlexConsumption'
+      name: 'EP1'
+      tier: 'ElasticPremium'
     }
     reserved: true
     location: location
@@ -168,42 +167,54 @@ module functionApp 'br/public:avm/res/web/site:0.16.0' = {
     managedIdentities: {
       systemAssigned: true
     }
-    functionAppConfig: {
-      deployment: {
-        storage: {
-          type: 'blobContainer'
-          value: '${storage.outputs.primaryBlobEndpoint}${deploymentStorageContainerName}'
-          authentication: {
-            type: 'SystemAssignedIdentity'
-          }
-        }
-      }
-      scaleAndConcurrency: {
-        maximumInstanceCount: maximumInstanceCount
-        instanceMemoryMB: instanceMemoryMB
-      }
-      runtime: { 
-        name: functionAppRuntime
-        version: functionAppRuntimeVersion
-      }
-    }
+    // functionAppConfig: {
+    //   // deployment: {
+    //   //   storage: {
+    //   //     type: 'blobContainer'
+    //   //     value: '${storage.outputs.primaryBlobEndpoint}${deploymentStorageContainerName}'
+    //   //     authentication: {
+    //   //       type: 'SystemAssignedIdentity'
+    //   //     }
+    //   //   }
+    //   // }
+    //   // scaleAndConcurrency: {
+    //   //   maximumInstanceCount: maximumInstanceCount
+    //   //   instanceMemoryMB: instanceMemoryMB
+    //   // }
+    //   runtime: {
+    //     name: functionAppRuntime
+    //     version: functionAppRuntimeVersion
+    //   }
+    // }
     siteConfig: {
       alwaysOn: false
+      linuxFxVersion: '${toUpper(functionAppRuntime)}|${functionAppRuntimeVersion}'
     }
-    configs: [{
-      name: 'appsettings'
-      properties:{
-        // Only include required credential settings unconditionally
-        AzureWebJobsStorage__credential: 'managedidentity'
-        AzureWebJobsStorage__blobServiceUri: 'https://${storage.outputs.name}.blob.${environment().suffixes.storage}'
-        AzureWebJobsStorage__queueServiceUri: 'https://${storage.outputs.name}.queue.${environment().suffixes.storage}'
-        AzureWebJobsStorage__tableServiceUri: 'https://${storage.outputs.name}.table.${environment().suffixes.storage}'
+    configs: [
+      {
+        storageAccountResourceId: storage.outputs.resourceId
+        storageAccountUseIdentityAuthentication: true
+        name: 'appsettings'
+        properties: {
+          // Only include required credential settings unconditionally
+          AzureWebJobsStorage__credential: 'managedidentity'
+          AzureWebJobsStorage__blobServiceUri: 'https://${storage.outputs.name}.blob.${environment().suffixes.storage}'
+          AzureWebJobsStorage__queueServiceUri: 'https://${storage.outputs.name}.queue.${environment().suffixes.storage}'
+          AzureWebJobsStorage__tableServiceUri: 'https://${storage.outputs.name}.table.${environment().suffixes.storage}'
 
-        // Application Insights settings are always included
-        APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.outputs.connectionString
-        APPLICATIONINSIGHTS_AUTHENTICATION_STRING: 'Authorization=AAD'
-    }
-    }]
+          // Application Insights settings are always included
+          APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.outputs.connectionString
+          APPLICATIONINSIGHTS_AUTHENTICATION_STRING: 'Authorization=AAD'
+
+          // Durable Task Scheduler settings
+          DURABLE_TASK_SCHEDULER_CONNECTION_STRING: 'Endpoint=${dts.outputs.dts_URL};Authentication=ManagedIdentity'
+          TASKHUB_NAME: dts.outputs.TASKHUB_NAME
+
+          FUNCTIONS_EXTENSION_VERSION: '~4'
+          FUNCTIONS_WORKER_RUNTIME: functionAppRuntime
+        }
+      }
+    ]
   }
 }
 
@@ -217,5 +228,6 @@ module rbacAssignments 'rbac.bicep' = {
     managedIdentityPrincipalId: functionApp.outputs.?systemAssignedMIPrincipalId ?? ''
     userIdentityPrincipalId: principalId
     allowUserIdentityPrincipal: !empty(principalId)
+    durableTaskSchedulerName: dts.outputs.dts_NAME
   }
 }

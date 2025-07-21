@@ -2,16 +2,16 @@
 set -euo pipefail
 
 # 1. Validate template (30 seconds)
-az deployment sub validate \
-  --template-file main.bicep \
-  --parameters main.bicepparam \
-  --location eastus2
+# az deployment sub validate \
+#   --template-file main.bicep \
+#   --parameters main.bicepparam \
+#   --location eastus2
 
 # 2. Preview changes (1 minute)
-az deployment sub what-if \
-  --template-file main.bicep \
-  --parameters main.bicepparam \
-  --location eastus2
+# az deployment sub what-if \
+#   --template-file main.bicep \
+#   --parameters main.bicepparam \
+#   --location eastus2
 
 
   az deployment sub create \

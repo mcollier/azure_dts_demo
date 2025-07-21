@@ -24,7 +24,8 @@ public static class DurableFunctionsOrchestrationCSharp1
 
         var approvalResponse = await context.WaitForExternalEvent<ClaimApprovalResponse>("ClaimApproval");
 
-        if (approvalResponse is not null && !approvalResponse.Approved)
+        // WaitForExternalEvent<T> guarantees a non-null return value when an event is received.
+        if (!approvalResponse.Approved)
         {
             logger.LogInformation("Claim was not approved: {Reason}", approvalResponse.Reason);
         }

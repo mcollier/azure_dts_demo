@@ -1,6 +1,6 @@
 # Azure Durable Task Scheduler Demo
 
-:warning: This is an imcomplete sample & exploratory project. Proceed with caution. :warning:
+:warning: This is an incomplete sample & exploratory project. Proceed with caution. :warning:
 
 <!-- // "type": "AzureStorage" -->
 

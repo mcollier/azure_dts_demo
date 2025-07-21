@@ -14,12 +14,24 @@ public static class DurableFunctionsOrchestrationCSharp1
     {
         ILogger logger = context.CreateReplaySafeLogger(nameof(DurableFunctionsOrchestrationCSharp1));
         logger.LogInformation("Saying hello.");
-        var outputs = new List<string>();
+        var outputs = new List<string>
+        {
+            // Replace name and input with values relevant for your Durable Functions Activity
+            await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"),
+            await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"),
+            await context.CallActivityAsync<string>(nameof(SayHello), "London")
+        };
 
-        // Replace name and input with values relevant for your Durable Functions Activity
-        outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Tokyo"));
-        outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
-        outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
+        var approvalResponse = await context.WaitForExternalEvent<ClaimApprovalResponse>("ClaimApproval");
+
+        if (approvalResponse is not null && !approvalResponse.Approved)
+        {
+            logger.LogInformation("Claim was not approved: {Reason}", approvalResponse.Reason);
+        }
+        else
+        {
+            logger.LogInformation("Claim was approved.");
+        }
 
         // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
         return outputs;

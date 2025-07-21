@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src", "src\src.csproj", "{71C949B3-493C-9DFE-AB38-19C13C100153}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DurableFunction", "src\DurableFunction.csproj", "{4B2FDD95-CC85-CDFA-1F7C-DCF38AC7F979}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,10 +10,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{71C949B3-493C-9DFE-AB38-19C13C100153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71C949B3-493C-9DFE-AB38-19C13C100153}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71C949B3-493C-9DFE-AB38-19C13C100153}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71C949B3-493C-9DFE-AB38-19C13C100153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B2FDD95-CC85-CDFA-1F7C-DCF38AC7F979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B2FDD95-CC85-CDFA-1F7C-DCF38AC7F979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B2FDD95-CC85-CDFA-1F7C-DCF38AC7F979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B2FDD95-CC85-CDFA-1F7C-DCF38AC7F979}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

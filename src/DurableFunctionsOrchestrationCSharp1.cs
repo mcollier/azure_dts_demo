@@ -8,6 +8,8 @@ namespace Collier.Demo;
 
 public static class DurableFunctionsOrchestrationCSharp1
 {
+    private const string ClaimApprovalEventName = "ClaimApproval";
+
     [Function(nameof(DurableFunctionsOrchestrationCSharp1))]
     public static async Task<List<string>> RunOrchestrator(
         [OrchestrationTrigger] TaskOrchestrationContext context)
@@ -22,7 +24,7 @@ public static class DurableFunctionsOrchestrationCSharp1
             await context.CallActivityAsync<string>(nameof(SayHello), "London")
         };
 
-        var approvalResponse = await context.WaitForExternalEvent<ClaimApprovalResponse>("ClaimApproval");
+        var approvalResponse = await context.WaitForExternalEvent<ClaimApprovalResponse>(ClaimApprovalEventName);
 
         // WaitForExternalEvent<T> guarantees a non-null return value when an event is received.
         if (!approvalResponse.Approved)

@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Replace "YOUR_AZURE_FUNCTION_APP_NAME" with the name of your Azure Function App.
 APP_NAME="YOUR_AZURE_FUNCTION_APP_NAME"
+
+# Replace "YOUR_AZURE_RESOURCE_GROUP_NAME" with the name of your Azure Resource Group.
 RESOURCE_GROUP="YOUR_AZURE_RESOURCE_GROUP_NAME"
 
 #  Build the Function App

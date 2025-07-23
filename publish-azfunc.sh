@@ -8,8 +8,15 @@ RESOURCE_GROUP="YOUR_AZURE_RESOURCE_GROUP_NAME"
 dotnet publish --configuration Release
 
 # Zip the function app source code
-pushd src/bin/Release/net8.0
+DOTNET_VERSION="net8.0"
+BUILD_PATH="src/bin/Release/$DOTNET_VERSION"
 
+if [ ! -d "$BUILD_PATH" ]; then
+    echo "Error: Build path '$BUILD_PATH' does not exist."
+    exit 1
+fi
+
+pushd "$BUILD_PATH"
 zip -r ../../../../functionapp.zip .
 
 popd

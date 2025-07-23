@@ -32,4 +32,4 @@ az functionapp deployment source config-zip \
     --resource-group $RESOURCE_GROUP
 
 # Use Azure Functions Core Tools to publish the Azure Function App
-# func azure functionapp publish $APP_NAME
+# func azure functionapp publish "$APP_NAME"

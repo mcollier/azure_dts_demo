@@ -11,15 +11,21 @@
         "ghcr.io/azure/azure-dev/azd": {
             "version": "latest"
         },
-        "ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {
-            "version": "latest"
-        },
+        // "ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {
+        //     "version": "latest"
+        // },
         "ghcr.io/devcontainers/features/github-cli": {
             "version": "latest"
-        }
+        },
+        "ghcr.io/devcontainers/features/node:1": {}
+
+        // Running on a ARM64 machine like a Surface Laptop Copilot+PC?
+        // Azure Functions Core Tools v4 is not fully supported on ARM64.
+        // Install node in the dev container and use the NPM version of Azure Functions Core Tools instead.
+        // https://github.com/Azure/azure-functions-core-tools/issues/4279
     },
     // Use 'postCreateCommand' to run commands after the container is created.
-    // "postCreateCommand": "dotnet restore",
+    "postCreateCommand": "npm install -g azure-functions-core-tools@4.0.7332-preview1 && dotnet restore",
     // Configure tool-specific properties.
     "customizations": {
         "vscode": {
@@ -36,8 +42,8 @@
                 "yzhang.markdown-all-in-one"
             ]
         }
-    }
-    // "runArgs": ["--network=host"]
+    },
+    "runArgs": ["--network=host"]
     // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
     // "remoteUser": "root"
 }

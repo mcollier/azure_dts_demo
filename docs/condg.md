@@ -14,7 +14,7 @@ _Principal Architect, Centric Consulting_
 
 ## Durable Functions
 
-- Durable Functions is Azure Function feature.
+- Durable Functions is an Azure Function feature.
   - Stateful workflows via "orchestrator functions".
   - Stateful entities via "entity functions".
 - Durable Functions manages state, checkpoints, etc.

@@ -102,7 +102,7 @@ Assuming an existing Durable Function:
 1. local.settings.json
     ```json
     {
-      "Values:{
+      "Values": {
         "DURABLE_TASK_SCHEDULER_CONNECTION_STRING":"",
         "TASKHUB_NAME": ""
       }

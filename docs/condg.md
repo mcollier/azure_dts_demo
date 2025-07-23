@@ -1,15 +1,16 @@
-# Central Ohio .NET Developer User Group
+# Getting Started with Azure Durable Task Scheduler
 
 ## About me
 
-ADD BIO HERE
+**Michael S. Collier**
+
+_Principal Architect, Centric Consulting_
 
 - Blog: [http://michaelscollier.com](https://michaelscollier.com)
 - Socials:
-  - LinkedIn:
-    - QR
-  - BlueSky:
-  - Threads:
+  - LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
+  - BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
+  - Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
 
 ## Durable Functions
 
@@ -47,14 +48,14 @@ ADD BIO HERE
 
 ### :ghost: Challenges
 
-- Securing access to Azure Storage (enabling proper RBAC)
+- Securing access to Azure Storage (enabling proper RBAC and VNET)
 - Storage account sprawl
 - Observability
-  - [Durable Functions Monitor](https://github.com/microsoft/DurableFunctionsMonitor)
+  - [Durable Functions Monitor (DFMon)](https://github.com/microsoft/DurableFunctionsMonitor)
   - DFMon limited to a single Storage Account (and related task hubs)
 - Performance
   - Azure Storage alternatives: Netherite or MSSQL
-- Clearing old orchestration data
+- Purging old orchestration data
 
 ## :tada: Durable Task Scheduler (DTS)
 
@@ -115,8 +116,30 @@ Assuming an existing Durable Function:
 DEMO TIME
 
 1. Start emulator
-2. Browse to dashboard at http://localhost:8082/
-3. Run orchestration using test.http file
+    ```
+    docker run --name dts-emulator -d -p 8080:8080 -p 8082:8082 mcr.microsoft.com/dts/dts-emulator:latest
+    ```
+2. View the logs
+    ```
+    docker logs -f dts-emulator
+    ```
+3. Browse to dashboard at http://localhost:8082/
+4. Start Azurite
+5. Start DF - `func start`
+6. Run orchestration using test.http file
+7. Send external event - ClaimApproval
+    ```json
+    {
+      "Approved": true,
+      "Reason": "Because this is awesome!"
+    }
+    ```
 
 ### Azure
 
+1. Provision a DTS resource
+2. Set up RBAC permissions - Durable Task Data Coordinator
+   1. Yourself (if necessary)
+   2. Identity of the function app
+3. Application settings - `DURABLE_TASK_SCHEDULER_CONNECTION_STRING` and `TASKHUB_NAME`
+4. Deploy as normal

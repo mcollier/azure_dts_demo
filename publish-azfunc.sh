@@ -29,7 +29,7 @@ popd
 az functionapp deployment source config-zip \
     --src functionapp.zip \
     --name "$APP_NAME" \
-    --resource-group $RESOURCE_GROUP
+    --resource-group "$RESOURCE_GROUP"
 
 # Use Azure Functions Core Tools to publish the Azure Function App
 # func azure functionapp publish "$APP_NAME"

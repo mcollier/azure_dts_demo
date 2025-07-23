@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="func-vu2qfc3ahlkm6"
-FUNCTION_AZURE_STORAGE_ACCOUNT="stvu2qfc3ahlkm6"
-FUNCTION_CONTAINER_NAME="app-package-func-vu2qfc3ahlkm6-vu2qfc3"
-RESOURCE_GROUP="rg-azdts-demo-local"
-
-# Use the Azure CLI to publish the Azure Function App
+APP_NAME="YOUR_AZURE_FUNCTION_APP_NAME"
+RESOURCE_GROUP="YOUR_AZURE_RESOURCE_GROUP_NAME"
 
 #  Build the Function App
 dotnet publish --configuration Release
@@ -18,6 +14,7 @@ zip -r ../../../../functionapp.zip .
 
 popd
 
+# Use the Azure CLI to publish the Azure Function App
 # Upload the zip file to the Azure Function App
 az functionapp deployment source config-zip \
     --src functionapp.zip \

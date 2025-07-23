@@ -78,7 +78,7 @@ Purpose-built Azure resource (Microsoft.DurableTask/scheduler) optimized for sol
 - Limited regions
 - Not yet feature parity
 
-### Run Locally
+### :running_man: Run Locally
 
 Assuming an existing Durable Function:
 1. Add DTS package
@@ -113,7 +113,7 @@ Assuming an existing Durable Function:
     docker pull mcr.microsoft.com/dts/dts-emulator:latest
     ```
 
-DEMO TIME
+#### :zap: DEMO TIME :zap:
 
 1. Start emulator
     ```
@@ -135,7 +135,7 @@ DEMO TIME
     }
     ```
 
-### Azure
+### :cloud_with_lightning: Azure
 
 1. Provision a DTS resource
 2. Set up RBAC permissions - Durable Task Data Coordinator

@@ -92,7 +92,7 @@ Assuming an existing Durable Function:
         "durableTask": {
           "hubName": "%TASKHUB_NAME%",
           "storageProvider": {
-            "type": "azureManaged",
+            "type": "azureManaged", // "AzureStorage" is non-DTS setting
             "connectionStringName": "DURABLE_TASK_SCHEDULER_CONNECTION_STRING"
           }
         }
@@ -103,8 +103,8 @@ Assuming an existing Durable Function:
     ```json
     {
       "Values": {
-        "DURABLE_TASK_SCHEDULER_CONNECTION_STRING":"",
-        "TASKHUB_NAME": ""
+        "DURABLE_TASK_SCHEDULER_CONNECTION_STRING":"Endpoint=http://localhost:8080;Authentication=Non",
+        "TASKHUB_NAME": "default"
       }
     }
     ```
@@ -126,7 +126,7 @@ Assuming an existing Durable Function:
 3. Browse to dashboard at http://localhost:8082/
 4. Start Azurite
 5. Start DF - `func start`
-6. Run orchestration using test.http file
+6. Run orchestration using [test.http](../src/test.http) file
 7. Send external event - ClaimApproval
     ```json
     {
@@ -137,7 +137,7 @@ Assuming an existing Durable Function:
 
 ### :cloud_with_lightning: Azure
 
-1. Provision a DTS resource
+1. Provision a DTS resource - Azure portal, Azure CLI, Bicep, etc.
 2. Set up RBAC permissions - Durable Task Data Coordinator
    1. Yourself (if necessary)
    2. Identity of the function app

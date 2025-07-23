@@ -28,7 +28,7 @@ popd
 # Upload the zip file to the Azure Function App
 az functionapp deployment source config-zip \
     --src functionapp.zip \
-    --name $APP_NAME \
+    --name "$APP_NAME" \
     --resource-group $RESOURCE_GROUP
 
 # Use Azure Functions Core Tools to publish the Azure Function App

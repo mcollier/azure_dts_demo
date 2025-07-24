@@ -6,6 +6,10 @@ param skuCapacity int
 param ipAllowlist array
 param tags object = {}
 
+param defaultRetentionPeriod int = 7
+param completedRetentionPeriod int = 14
+param failedRetentionPeriod int = 30
+
 resource dts 'Microsoft.DurableTask/schedulers@2025-04-01-preview'={
   location: location
   tags: tags

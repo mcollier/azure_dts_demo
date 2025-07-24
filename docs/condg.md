@@ -4,6 +4,9 @@
 
 **Michael S. Collier**
 
+- Husband, father, Buckeye, golfer
+- Azure Columbus user group co-lead
+
 _Principal Architect, Centric Consulting_
 
 - Blog: [http://michaelscollier.com](https://michaelscollier.com)
@@ -11,6 +14,8 @@ _Principal Architect, Centric Consulting_
   - LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
   - BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
   - Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
+
+![my blog qr code](./images/bing_generated_qrcode.png)
 
 ## Durable Functions
 

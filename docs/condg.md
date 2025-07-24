@@ -70,6 +70,9 @@ Purpose-built Azure resource (Microsoft.DurableTask/scheduler) optimized for sol
 - Multiple task hubs (environment, team, etc.)
 - Local emulator
 - Autopurge
+- Performance (5x Azure Storage)!
+
+![benchmark](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-task-scheduler/media/durable-task-scheduler/performance.png)
 
 ### :warning: Limitations
 
@@ -143,3 +146,11 @@ Assuming an existing Durable Function:
    2. Identity of the function app
 3. Application settings - `DURABLE_TASK_SCHEDULER_CONNECTION_STRING` and `TASKHUB_NAME`
 4. Deploy as normal
+
+## :dollar: Pricing
+
+Based on Capacity Unit (CU):
+- Single tenant with dedicated resources
+- Up to 2,000 work items dispatched per second
+- 50 GB of orchestration data storage
+- **$615.001/month**

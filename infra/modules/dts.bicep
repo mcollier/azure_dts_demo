@@ -21,6 +21,25 @@ resource dts 'Microsoft.DurableTask/schedulers@2025-04-01-preview'={
   resource taskHub 'taskHubs' = {
     name: taskHubName
   }
+
+  resource retentionPolicy 'retentionPolicies'={
+    name: 'default'
+    properties:{
+      retentionPolicies:[
+        {
+          retentionPeriodInDays: 7
+        }
+        {
+          retentionPeriodInDays: 3
+          orchestrationState: 'Completed'
+        }
+        {
+          retentionPeriodInDays: 21
+          orchestrationState: 'Failed'
+        }
+      ]
+    }
+  }
 }
 
 output dts_NAME string = dts.name

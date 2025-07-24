@@ -10,10 +10,9 @@
 _Principal Architect, Centric Consulting_
 
 - Blog: [http://michaelscollier.com](https://michaelscollier.com)
-- Socials:
-  - LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
-  - BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
-  - Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
+- LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
+- BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
+- Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
 
 ![my blog qr code](./images/bing_generated_qrcode.png)
 
@@ -33,6 +32,11 @@ _Principal Architect, Centric Consulting_
   - Java
 
 ### Patterns
+
+<!-- - Function Chaining
+- Fan-out/fan-in
+- Async HTTP APIs
+- Human interaction -->
 
 #### Function Chaining
 ![alt text](https://learn.microsoft.com/en-us/azure/azure-functions/durable/media/durable-functions-concepts/function-chaining.png)

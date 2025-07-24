@@ -22,10 +22,10 @@ resource dts 'Microsoft.DurableTask/schedulers@2025-04-01-preview'={
     name: taskHubName
   }
 
-  resource retentionPolicy 'retentionPolicies'={
+  resource retentionPolicy 'retentionPolicies' = {
     name: 'default'
-    properties:{
-      retentionPolicies:[
+    properties: {
+      retentionPolicies: [
         {
           retentionPeriodInDays: 7
         }

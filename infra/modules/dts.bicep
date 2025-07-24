@@ -27,14 +27,14 @@ resource dts 'Microsoft.DurableTask/schedulers@2025-04-01-preview'={
     properties: {
       retentionPolicies: [
         {
-          retentionPeriodInDays: 7
+          retentionPeriodInDays: defaultRetentionPeriod
         }
         {
-          retentionPeriodInDays: 3
+          retentionPeriodInDays: completedRetentionPeriod
           orchestrationState: 'Completed'
         }
         {
-          retentionPeriodInDays: 21
+          retentionPeriodInDays: failedRetentionPeriod
           orchestrationState: 'Failed'
         }
       ]

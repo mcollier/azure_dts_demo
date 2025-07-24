@@ -4,13 +4,17 @@
 
 **Michael S. Collier**
 
+- Husband, father, Buckeye, golfer
+- Azure Columbus user group co-lead
+
 _Principal Architect, Centric Consulting_
 
 - Blog: [http://michaelscollier.com](https://michaelscollier.com)
-- Socials:
-  - LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
-  - BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
-  - Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
+- LinkedIn: [https://www.linkedin.com/in/mcollier/](https://www.linkedin.com/in/mcollier/)
+- BlueSky: [https://bsky.app/profile/michaelscollier.com](https://bsky.app/profile/michaelscollier.com)
+- Threads: [https://www.threads.com/@michaelcollier01](https://www.threads.com/@michaelcollier01)
+
+![my blog qr code](./images/bing_generated_qrcode.png)
 
 ## Durable Functions
 
@@ -28,6 +32,11 @@ _Principal Architect, Centric Consulting_
   - Java
 
 ### Patterns
+
+<!-- - Function Chaining
+- Fan-out/fan-in
+- Async HTTP APIs
+- Human interaction -->
 
 #### Function Chaining
 ![alt text](https://learn.microsoft.com/en-us/azure/azure-functions/durable/media/durable-functions-concepts/function-chaining.png)
@@ -70,6 +79,9 @@ Purpose-built Azure resource (Microsoft.DurableTask/scheduler) optimized for sol
 - Multiple task hubs (environment, team, etc.)
 - Local emulator
 - Autopurge
+- Performance (5x Azure Storage)!
+
+![benchmark](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-task-scheduler/media/durable-task-scheduler/performance.png)
 
 ### :warning: Limitations
 
@@ -92,7 +104,7 @@ Assuming an existing Durable Function:
         "durableTask": {
           "hubName": "%TASKHUB_NAME%",
           "storageProvider": {
-            "type": "azureManaged",
+            "type": "azureManaged", // "AzureStorage" is non-DTS setting
             "connectionStringName": "DURABLE_TASK_SCHEDULER_CONNECTION_STRING"
           }
         }
@@ -103,8 +115,8 @@ Assuming an existing Durable Function:
     ```json
     {
       "Values": {
-        "DURABLE_TASK_SCHEDULER_CONNECTION_STRING":"",
-        "TASKHUB_NAME": ""
+        "DURABLE_TASK_SCHEDULER_CONNECTION_STRING":"Endpoint=http://localhost:8080;Authentication=Non",
+        "TASKHUB_NAME": "default"
       }
     }
     ```
@@ -126,7 +138,7 @@ Assuming an existing Durable Function:
 3. Browse to dashboard at http://localhost:8082/
 4. Start Azurite
 5. Start DF - `func start`
-6. Run orchestration using test.http file
+6. Run orchestration using [test.http](../src/test.http) file
 7. Send external event - ClaimApproval
     ```json
     {
@@ -137,9 +149,17 @@ Assuming an existing Durable Function:
 
 ### :cloud_with_lightning: Azure
 
-1. Provision a DTS resource
+1. Provision a DTS resource - Azure portal, Azure CLI, Bicep, etc.
 2. Set up RBAC permissions - Durable Task Data Coordinator
    1. Yourself (if necessary)
    2. Identity of the function app
 3. Application settings - `DURABLE_TASK_SCHEDULER_CONNECTION_STRING` and `TASKHUB_NAME`
 4. Deploy as normal
+
+## :dollar: Pricing
+
+Based on Capacity Unit (CU):
+- Single tenant with dedicated resources
+- Up to 2,000 work items dispatched per second
+- 50 GB of orchestration data storage
+- **$615.001/month**
